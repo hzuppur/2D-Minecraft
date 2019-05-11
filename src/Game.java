@@ -54,13 +54,14 @@ public class Game extends JFrame implements Runnable {
     
     renderer = new RenderHandler(getWidth(), getHeight());
     //load Assets
-    BufferedImage sheetImage = loadImage("recourses\\Tiles1.png");
+    BufferedImage sheetImage = loadImage("recourses\\TileSheets\\Tiles1.png");
     sheet = new SpriteSheet(sheetImage);
     sheet.loadSprites(16, 16);
     
-    BufferedImage playerSheetImage = loadImage("recourses\\Player.png");
+    //BufferedImage playerSheetImage = loadImage("recourses\\Player.png");
+    BufferedImage playerSheetImage = loadImage("recourses\\Players\\rincewind.png");
     playerSheet = new SpriteSheet(playerSheetImage);
-    playerSheet.loadSprites(20, 26);
+    playerSheet.loadSprites(32, 48);
     
     //player animated sprites
     AnimatedSprite playerAnimations = new AnimatedSprite(playerSheet, 5);

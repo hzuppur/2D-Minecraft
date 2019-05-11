@@ -3,7 +3,7 @@ public class Player implements GameObject {
   private int speed = 10;
   private Sprite sprite;
   private AnimatedSprite animatedSprite = null;
-  //0-right, 1-left, 2-up, 3-down
+  //0-down, 1-left, 2-right, 3-up
   private int direction = 0;
   
   public Player(Sprite sprite) {
@@ -19,14 +19,14 @@ public class Player implements GameObject {
   private void updateDirection() {
     if (animatedSprite != null) {
       // 8-is the number of sprites right now in one moving animation
-      animatedSprite.setAnimationRange(direction * 8, direction * 8 + 7);
+      animatedSprite.setAnimationRange(direction * 4, direction * 4 + 3);
     }
   }
   
   //call every time physicaly possible
   public void render(RenderHandler renderer, int xZoom, int yZoom) {
     if (animatedSprite != null){
-      renderer.renderSprite(animatedSprite, playerRectangel.x, playerRectangel.y, xZoom, yZoom, false);
+      renderer.renderSprite(animatedSprite, playerRectangel.x, playerRectangel.y, xZoom-1, yZoom-1, false);
     }else if (sprite != null){
       renderer.renderSprite(sprite, playerRectangel.x, playerRectangel.y, xZoom, yZoom, false);
     }else {
@@ -51,17 +51,17 @@ public class Player implements GameObject {
     if (keyListener.right()) {
       playerRectangel.x += speed;
       didMoved = true;
-      newDirection = 0;
+      newDirection = 2;
     }
     if (keyListener.up()) {
       playerRectangel.y -= speed;
       didMoved = true;
-      newDirection = 2;
+      newDirection = 3;
     }
     if (keyListener.down()) {
       playerRectangel.y += speed;
       didMoved = true;
-      newDirection = 3;
+      newDirection = 0;
     }
     
     if (newDirection != direction){
