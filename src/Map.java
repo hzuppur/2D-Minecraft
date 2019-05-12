@@ -12,10 +12,12 @@ public class Map {
     private List<MappedTile> mappedTiles = new ArrayList<>();
     private HashMap<Integer, String> comments = new HashMap<Integer, String>();
     private File mapFile;
+    private int tileSize;
 
-    public Map(File mapFile, Tiles tileSet) {
+    public Map(File mapFile, Tiles tileSet, int tileSize) {
         this.tileSet = tileSet;
         this.mapFile = mapFile;
+        this.tileSize = tileSize;
         try {
             Scanner scanner = new Scanner(mapFile);
             int currentLine = 0;
@@ -108,8 +110,8 @@ public class Map {
     }
 
     public void render(RenderHandler renderer, int xZoom, int yZoom) {
-        int tileWidth = 16 * xZoom;
-        int tileHeight = 16 * yZoom;
+        int tileWidth = tileSize * xZoom;
+        int tileHeight = tileSize * yZoom;
 
         if (fillTileID >= 0) {
             Rectangle camera = renderer.getCamera();

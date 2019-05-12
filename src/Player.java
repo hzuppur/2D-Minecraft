@@ -26,7 +26,7 @@ public class Player implements GameObject {
   //call every time physicaly possible
   public void render(RenderHandler renderer, int xZoom, int yZoom) {
     if (animatedSprite != null){
-      renderer.renderSprite(animatedSprite, playerRectangel.x, playerRectangel.y, xZoom-1, yZoom-1, false);
+      renderer.renderSprite(animatedSprite, playerRectangel.x, playerRectangel.y, xZoom, yZoom, false);
     }else if (sprite != null){
       renderer.renderSprite(sprite, playerRectangel.x, playerRectangel.y, xZoom, yZoom, false);
     }else {

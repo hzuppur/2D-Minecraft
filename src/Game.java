@@ -23,6 +23,7 @@ public class Game extends JFrame implements Runnable {
   
   private Tiles tiles;
   private Map map;
+  private SDK sdk;
   
   private GameObject[] objects;
   private KeyBoardListener keyListener = new KeyBoardListener(this);
@@ -30,8 +31,9 @@ public class Game extends JFrame implements Runnable {
   
   private Player player;
   
-  private int xZoom = 3;
-  private int yZoom = 3;
+  private int xZoom = 2;
+  private int yZoom = 2;
+  private int tileSize = 32;
   
   public Game() {
     //Make our program shutdown when we exit out.
@@ -54,9 +56,10 @@ public class Game extends JFrame implements Runnable {
     
     renderer = new RenderHandler(getWidth(), getHeight());
     //load Assets
-    BufferedImage sheetImage = loadImage("recourses\\TileSheets\\Tiles1.png");
+    //BufferedImage sheetImage = loadImage("recourses\\TileSheets\\Tiles1.png");
+    BufferedImage sheetImage = loadImage("recourses\\TileSheets\\town_forest_tiles.png");
     sheet = new SpriteSheet(sheetImage);
-    sheet.loadSprites(16, 16);
+    sheet.loadSprites(tileSize, tileSize);
     
     //BufferedImage playerSheetImage = loadImage("recourses\\Player.png");
     BufferedImage playerSheetImage = loadImage("recourses\\Players\\rincewind.png");
@@ -70,25 +73,27 @@ public class Game extends JFrame implements Runnable {
     tiles = new Tiles(new File("Tiles.txt"), sheet);
     
     //load map
-    map = new Map(new File("Map.txt"), tiles);
+    map = new Map(new File("Map.txt"), tiles, tileSize);
     
     //load SDK GUI
-    GUIButton[] buttons = new GUIButton[tiles.size()];
+    sdk = new SDK(new File("SKD_Buttons.txt"), tileSize, xZoom, yZoom, this, tiles.getSprites());
+    
+    /*GUIButton[] buttons = new GUIButton[tiles.size()];
     Sprite[] tileSprites = tiles.getSprites();
     for (int i = 0; i < buttons.length; i++) {
       // Rectangle(0, i * (16 * xZoom + 1), 16, 16) in here the +1 is margin between each square
-      Rectangle tileRectangle = new Rectangle(0, i * (16 * xZoom + 1), 16*xZoom, 16*yZoom);
+      Rectangle tileRectangle = new Rectangle(0, i * (tileSize * xZoom + 1), tileSize * xZoom, tileSize * yZoom);
       
       buttons[i] = new SDKButton(this, i, tileSprites[i], tileRectangle);
     }
-    GUI gui = new GUI(buttons, 5, 5, true);
+    GUI gui = new GUI(buttons, 5, 5, true);*/
     
     
     //load Objectsd
     objects = new GameObject[2];
     player = new Player(playerAnimations);
     objects[0] = player;
-    objects[1] = gui;
+    objects[1] = sdk.getGui();
     
     
     //Add listeners
@@ -96,7 +101,7 @@ public class Game extends JFrame implements Runnable {
     canvas.addFocusListener(keyListener);
     canvas.addMouseListener(mouseListener);
     canvas.addMouseMotionListener(mouseListener);
-    
+    canvas.addMouseWheelListener(mouseListener);
     //testImage = loadImage("GrassTile.png");
     //testSprite = sheet.getSprite(4, 2);
     //testRectangle.generateGraphics(5, 0xFF0000);
@@ -127,26 +132,66 @@ public class Game extends JFrame implements Runnable {
     boolean stopChecking = false;
     
     for (int i = 0; i < objects.length; i++) {
-      if(!stopChecking)
+      if (!stopChecking)
         stopChecking = objects[i].handleMouseClick(mouseRectangle, renderer.getCamera(), xZoom, yZoom);
     }
     
-    if(!stopChecking) {
-      x = (int) Math.floor((x + renderer.getCamera().x) / (16.0 * xZoom));
-      y = (int) Math.floor((y + renderer.getCamera().y) / (16.0 * yZoom));
-      map.setTile(x, y, selectedTileID);
+    if (!stopChecking) {
+      int spriteID = sdk.getSpriteID(selectedTileID);
+      
+      System.out.println("Selected tile: " + selectedTileID);
+      x = (int) Math.floor((x + renderer.getCamera().x) / ((double) tileSize * xZoom));
+      y = (int) Math.floor((y + renderer.getCamera().y) / ((double) tileSize * yZoom));
+      
+      if (selectedTileID == 1) {
+        placeObject(x, y, spriteID, 1, 2);
+      } else if (selectedTileID == 2) {
+        placeObject(x, y, spriteID, 1, 3);
+      } else if (selectedTileID == 3) {
+        placeObject(x, y, spriteID, 2, 2);
+      } else if (selectedTileID == 7) {
+        placeObject(x, y, spriteID, 2, 1);
+      } else if (selectedTileID == 8) {
+        placeObject(x, y, spriteID, 2, 1);
+      } else if (selectedTileID == 10) {
+        placeObject(x, y, spriteID, 2, 1);
+      } else if (selectedTileID == 11) {
+        placeObject(x, y, spriteID, 2, 1);
+      }
+      else {
+        map.setTile(x, y, sdk.getSpriteID(selectedTileID));
+      }
     }
   }
   
   public void rightClick(int x, int y) {
-    x = (int) Math.floor((x + renderer.getCamera().x) / (16.0 * xZoom));
-    y = (int) Math.floor((y + renderer.getCamera().y) / (16.0 * yZoom));
+    x = (int) Math.floor((x + renderer.getCamera().x) / ((double) tileSize * xZoom));
+    y = (int) Math.floor((y + renderer.getCamera().y) / ((double) tileSize * yZoom));
     map.removeTile(x, y);
+  }
+  
+  public void mouseWeel(boolean up) {
+    if (up)
+      sdk.setScroll(tileSize);
+    else
+      sdk.setScroll(-tileSize);
   }
   
   public void handleCTRL(boolean[] keys) {
     if (keys[KeyEvent.VK_S]) {
       map.saveMap();
+    }
+  }
+  
+  private void placeObject(int x, int y, int StartspriteID, int width, int height) {
+    int currentSprite = 0;
+    System.out.println("Pos: ");
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        map.setTile(x + j, y - i, StartspriteID + currentSprite);
+        System.out.println(StartspriteID + currentSprite);
+        currentSprite++;
+      }
     }
   }
   
@@ -177,7 +222,7 @@ public class Game extends JFrame implements Runnable {
     selectedTileID = tileID;
   }
   
-  public int getSelectedTile(){
+  public int getSelectedTile() {
     return selectedTileID;
   }
   

@@ -1,3 +1,5 @@
+import java.io.File;
+
 public class GUI implements GameObject
 {
   private Sprite backgroundSprite;
@@ -71,6 +73,8 @@ public class GUI implements GameObject
     
     return stopChecking;
   }
-  
-  
+  public void setScroll(int scrollAmout) {
+    rect.y += scrollAmout;
+    System.out.println(rect.y);
+  }
 }
