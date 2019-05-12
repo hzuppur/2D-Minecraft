@@ -139,7 +139,6 @@ public class Game extends JFrame implements Runnable {
     if (!stopChecking) {
       int spriteID = sdk.getSpriteID(selectedTileID);
       
-      System.out.println("Selected tile: " + selectedTileID);
       x = (int) Math.floor((x + renderer.getCamera().x) / ((double) tileSize * xZoom));
       y = (int) Math.floor((y + renderer.getCamera().y) / ((double) tileSize * yZoom));
       
@@ -185,11 +184,9 @@ public class Game extends JFrame implements Runnable {
   
   private void placeObject(int x, int y, int StartspriteID, int width, int height) {
     int currentSprite = 0;
-    System.out.println("Pos: ");
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         map.setTile(x + j, y - i, StartspriteID + currentSprite);
-        System.out.println(StartspriteID + currentSprite);
         currentSprite++;
       }
     }
