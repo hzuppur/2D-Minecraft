@@ -1,0 +1,26 @@
+//Asset name-ID-SpriteID
+//if asset is multiple sprites, sptiteID is ID of first sptite.
+
+//Nature
+
+Grass     -0-0
+Pine      -1-1
+TallPine  -2-3
+Oak       -3-6
+Bush      -4-10
+TreeStump1-5-11
+TreeStump2-6-12
+
+//Building
+
+RoofLeftStart -7-13
+RoofLeftUP    -8-16
+RoofLeft      -9-15
+RoofRightStart-10-21
+RoofRightUP   -11-18
+RoofRight     -12-20
+Wall          -13-23
+Door          -14-24
+Window        -15-25
+
+//Misc
