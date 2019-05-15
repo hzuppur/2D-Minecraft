@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,7 +37,7 @@ public class Tiles {
     if(tileID >= 0 && tilesList.size() > tileID){
       renderer.renderSprite(tilesList.get(tileID).sprite, xPos, yPos, xZoom, yZoom, false);
     }else {
-      System.out.println("TileID " + tileID + "is not in range of tilesList" + tilesList.size());
+      System.out.println("TileID " + tileID + " is not in range of tilesList size: " + tilesList.size());
     }
   }
   

@@ -21,6 +21,7 @@ public class Rectangle {
   }
   
   public boolean intersects(Rectangle otherRectangle) {
+    
     if (x > otherRectangle.x + otherRectangle.w || otherRectangle.x > x + w)
       return false;
     if (y > otherRectangle.y + otherRectangle.h || otherRectangle.y > y + h)
@@ -63,5 +64,22 @@ public class Rectangle {
   
   public String toString() {
     return "[" + x + "," + y + "," + w + "," + h + "]";
+  }
+  
+  public boolean isOverlaping(Rectangle otherRect) {
+    // If one rectangle is on left side of other
+    if (otherRect.h == 0 || otherRect.w == 0 || w == 0 || h == 0){
+      return false;
+    }
+    if (x > otherRect.x + otherRect.w + otherRect.h || otherRect.x > x + w + h) {
+      return false;
+    }
+    
+    // If one rectangle is above other
+    if (y > otherRect.y + otherRect.w + otherRect.h || otherRect.y > y + w + h) {
+      return false;
+    }
+    
+    return true;
   }
 }

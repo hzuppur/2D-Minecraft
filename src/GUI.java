@@ -75,6 +75,5 @@ public class GUI implements GameObject
   }
   public void setScroll(int scrollAmout) {
     rect.y += scrollAmout;
-    System.out.println(rect.y);
   }
 }

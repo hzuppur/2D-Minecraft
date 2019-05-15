@@ -1,26 +1,17 @@
 //Asset name-ID-SpriteID
-//if asset is multiple sprites, sptiteID is ID of first sptite.
+//MapObjects name-ID-SpriteStartX-SpriteStartY-width-height-HitBoxStartX-HitBoxStartY-HitBoxWidth-HitBoxHeight
 
 //Nature
-
-Grass     -0-0
-Pine      -1-1
-TallPine  -2-3
-Oak       -3-6
-Bush      -4-10
-TreeStump1-5-11
-TreeStump2-6-12
-
-//Building
-
-RoofLeftStart -7-13
-RoofLeftUP    -8-16
-RoofLeft      -9-15
-RoofRightStart-10-21
-RoofRightUP   -11-18
-RoofRight     -12-20
-Wall          -13-23
-Door          -14-24
-Window        -15-25
-
-//Misc
+Grass      -0-0
+Soil       -1-1
+Pine       -2-0-24-2-5-14-40-3-3
+Fence      -3-1-0-1-1-0-30-5-1
+Fence      -4-1-1-1-1-0-30-5-1
+fenceGateL -5-0-5-1-1-0-30-5-1
+fenceGateR -6-2-5-1-1-0-30-5-1
+fenceGate  -7-1-5-1-1-0-0-0-0
+fencePostBL-8-0-4-1-1-0-30-5-1
+fencePostBR-9-2-4-1-1-0-30-5-1
+fencePostTL-10-0-2-1-1-0-0-9-9
+fencePostTR-11-2-2-1-1-0-0-9-9
+Boat       -12-10-14-4-2-0-0-9-9

@@ -1,8 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SDK {
   private int tileSize;
@@ -11,12 +11,13 @@ public class SDK {
   private Game game;
   private Sprite[] tileSprites;
   private List<Integer> spriteID = new ArrayList<>();
+  private Map<Integer, int[]> MapObjects = new HashMap<>();
   int x = 0;
   int y = 0;
   
   private GUI gui;
   
-  public SDK(File buttonsFile, int tileSize, int xZoom, int yZoom, Game game, Sprite[] tileSprites){
+  public SDK(File buttonsFile, int tileSize, int xZoom, int yZoom, Game game, Sprite[] tileSprites) {
     this.tileSize = tileSize;
     this.xZoom = xZoom;
     this.yZoom = yZoom;
@@ -34,8 +35,20 @@ public class SDK {
         //does not read comments in file
         if (!line.startsWith("//") && !line.equals("")) {
           String[] splitLine = line.split("-");
+          if (splitLine.length == 10) {
+            MapObjects.put(Integer.parseInt(splitLine[1]), new int[]{
+                    Integer.parseInt(splitLine[2]),
+                    Integer.parseInt(splitLine[3]),
+                    Integer.parseInt(splitLine[4]),
+                    Integer.parseInt(splitLine[5]),
+                    Integer.parseInt(splitLine[6]),
+                    Integer.parseInt(splitLine[7]),
+                    Integer.parseInt(splitLine[8]),
+                    Integer.parseInt(splitLine[9])});
+          }
           Rectangle tileRectangle = new Rectangle(x, y + i * (tileSize * xZoom + 1), tileSize * xZoom, tileSize * yZoom);
-          buttons.add(new SDKButton(game, Integer.parseInt(splitLine[1]), tileSprites[Integer.parseInt(splitLine[2])], tileRectangle));
+          //buttons.add(new SDKButton(game, Integer.parseInt(splitLine[1]), tileSprites[Integer.parseInt(splitLine[2])], tileRectangle));
+          buttons.add(new SDKButton(game, Integer.parseInt(splitLine[1]), tileSprites[0], tileRectangle));
           
           spriteID.add(Integer.parseInt(splitLine[2]));
           
@@ -44,7 +57,7 @@ public class SDK {
       }
       SDKButton[] buttonsArray = new SDKButton[buttons.size()];
       buttonsArray = buttons.toArray(buttonsArray);
-  
+      
       gui = new GUI(buttonsArray, 5, 5, true);
       
     } catch (FileNotFoundException e) {
@@ -58,6 +71,10 @@ public class SDK {
   
   public int getSpriteID(int ID) {
     return spriteID.get(ID);
+  }
+  
+  public Map<Integer, int[]> getMapObjects() {
+    return MapObjects;
   }
   
   public void setScroll(int scrollAmout) {

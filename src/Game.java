@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.Runnable;
 import java.lang.Thread;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
@@ -19,13 +22,15 @@ public class Game extends JFrame implements Runnable {
   private SpriteSheet sheet;
   private SpriteSheet playerSheet;
   
-  private int selectedTileID = 2;
+  private int selectedTileID = 0;
   
   private Tiles tiles;
-  private Map map;
+  private WorldMap worldMap;
   private SDK sdk;
   
-  private GameObject[] objects;
+  private List<GameObject> objects;
+  private List<MapObject> mapObjects;
+  private Map MapObjectsMap;
   private KeyBoardListener keyListener = new KeyBoardListener(this);
   private MouseEventListener mouseListener = new MouseEventListener(this);
   
@@ -55,13 +60,12 @@ public class Game extends JFrame implements Runnable {
     canvas.createBufferStrategy(3);
     
     renderer = new RenderHandler(getWidth(), getHeight());
+    
     //load Assets
-    //BufferedImage sheetImage = loadImage("recourses\\TileSheets\\Tiles1.png");
-    BufferedImage sheetImage = loadImage("recourses\\TileSheets\\town_forest_tiles.png");
+    BufferedImage sheetImage = loadImage("recourses\\TileSheets\\SpriteSheet.png");
     sheet = new SpriteSheet(sheetImage);
     sheet.loadSprites(tileSize, tileSize);
     
-    //BufferedImage playerSheetImage = loadImage("recourses\\Player.png");
     BufferedImage playerSheetImage = loadImage("recourses\\Players\\rincewind.png");
     playerSheet = new SpriteSheet(playerSheetImage);
     playerSheet.loadSprites(32, 48);
@@ -72,28 +76,21 @@ public class Game extends JFrame implements Runnable {
     //load tiles
     tiles = new Tiles(new File("Tiles.txt"), sheet);
     
-    //load map
-    map = new Map(new File("Map.txt"), tiles, tileSize);
+    //load worldMap
+    mapObjects = new ArrayList<>();
+    worldMap = new WorldMap(new File("Map.txt"), tiles, tileSize, this);
     
     //load SDK GUI
     sdk = new SDK(new File("SKD_Buttons.txt"), tileSize, xZoom, yZoom, this, tiles.getSprites());
     
-    /*GUIButton[] buttons = new GUIButton[tiles.size()];
-    Sprite[] tileSprites = tiles.getSprites();
-    for (int i = 0; i < buttons.length; i++) {
-      // Rectangle(0, i * (16 * xZoom + 1), 16, 16) in here the +1 is margin between each square
-      Rectangle tileRectangle = new Rectangle(0, i * (tileSize * xZoom + 1), tileSize * xZoom, tileSize * yZoom);
-      
-      buttons[i] = new SDKButton(this, i, tileSprites[i], tileRectangle);
-    }
-    GUI gui = new GUI(buttons, 5, 5, true);*/
-    
     
     //load Objectsd
-    objects = new GameObject[2];
-    player = new Player(playerAnimations);
-    objects[0] = player;
-    objects[1] = sdk.getGui();
+    objects = new ArrayList<>();
+    player = new Player(playerAnimations, this);
+    objects.add(player);
+    objects.add(sdk.getGui());
+    MapObjectsMap = sdk.getMapObjects();
+    worldMap.loadObjects();
     
     
     //Add listeners
@@ -109,8 +106,8 @@ public class Game extends JFrame implements Runnable {
   
   
   public void update() {
-    for (int i = 0; i < objects.length; i++) {
-      objects[i].update(this);
+    for (int i = 0; i < objects.size(); i++) {
+      objects.get(i).update(this);
     }
   }
   
@@ -131,42 +128,40 @@ public class Game extends JFrame implements Runnable {
     Rectangle mouseRectangle = new Rectangle(x, y, 1, 1);
     boolean stopChecking = false;
     
-    for (int i = 0; i < objects.length; i++) {
+    for (int i = 0; i < objects.size(); i++) {
       if (!stopChecking)
-        stopChecking = objects[i].handleMouseClick(mouseRectangle, renderer.getCamera(), xZoom, yZoom);
+        stopChecking = objects.get(i).handleMouseClick(mouseRectangle, renderer.getCamera(), xZoom, yZoom);
     }
     
     if (!stopChecking) {
-      int spriteID = sdk.getSpriteID(selectedTileID);
       
       x = (int) Math.floor((x + renderer.getCamera().x) / ((double) tileSize * xZoom));
       y = (int) Math.floor((y + renderer.getCamera().y) / ((double) tileSize * yZoom));
       
-      if (selectedTileID == 1) {
-        placeObject(x, y, spriteID, 1, 2);
-      } else if (selectedTileID == 2) {
-        placeObject(x, y, spriteID, 1, 3);
-      } else if (selectedTileID == 3) {
-        placeObject(x, y, spriteID, 2, 2);
-      } else if (selectedTileID == 7) {
-        placeObject(x, y, spriteID, 2, 1);
-      } else if (selectedTileID == 8) {
-        placeObject(x, y, spriteID, 2, 1);
-      } else if (selectedTileID == 10) {
-        placeObject(x, y, spriteID, 2, 1);
-      } else if (selectedTileID == 11) {
-        placeObject(x, y, spriteID, 2, 1);
-      }
-      else {
-        map.setTile(x, y, sdk.getSpriteID(selectedTileID));
+      
+      if (MapObjectsMap.containsKey(selectedTileID)) {
+        placeObject(x, y, selectedTileID);
+      } else {
+        worldMap.setTile(x, y, sdk.getSpriteID(selectedTileID));
       }
     }
   }
   
   public void rightClick(int x, int y) {
+    boolean clickedOnObject = false;
     x = (int) Math.floor((x + renderer.getCamera().x) / ((double) tileSize * xZoom));
     y = (int) Math.floor((y + renderer.getCamera().y) / ((double) tileSize * yZoom));
-    map.removeTile(x, y);
+    
+    for (int i = 0; i < mapObjects.size(); i++) {
+      if (mapObjects.get(i).checkIfselected(x,y)){
+        mapObjects.remove(i);
+        clickedOnObject = true;
+        break;
+      }
+    }
+    if (!clickedOnObject){
+      worldMap.removeTile(x, y);
+    }
   }
   
   public void mouseWeel(boolean up) {
@@ -178,18 +173,18 @@ public class Game extends JFrame implements Runnable {
   
   public void handleCTRL(boolean[] keys) {
     if (keys[KeyEvent.VK_S]) {
-      map.saveMap();
+      worldMap.saveMap();
     }
   }
   
-  private void placeObject(int x, int y, int StartspriteID, int width, int height) {
-    int currentSprite = 0;
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        map.setTile(x + j, y - i, StartspriteID + currentSprite);
-        currentSprite++;
-      }
-    }
+  public void placeObject(int x, int y, int selectedTileID) {
+    int[] currentObjectValues = (int[]) MapObjectsMap.get(selectedTileID);
+    
+    MapObject currentObject = new MapObject(sheet, new Rectangle(currentObjectValues[0], currentObjectValues[1], currentObjectValues[2], currentObjectValues[3]), tileSize, x, y, xZoom, yZoom, selectedTileID);
+    
+    currentObject.setHitBox(currentObjectValues[4] * xZoom, currentObjectValues[5] * yZoom, currentObjectValues[6] * xZoom, currentObjectValues[7] * yZoom);
+    
+    mapObjects.add(currentObject);
   }
   
   
@@ -198,9 +193,14 @@ public class Game extends JFrame implements Runnable {
     Graphics graphics = bufferStrategy.getDrawGraphics();
     super.paint(graphics);
     
-    map.render(renderer, xZoom, yZoom);
-    for (int i = 0; i < objects.length; i++) {
-      objects[i].render(renderer, xZoom, xZoom);
+    worldMap.render(renderer, xZoom, yZoom);
+    
+    for (int i = 0; i < mapObjects.size(); i++) {
+      mapObjects.get(i).render(renderer, xZoom, xZoom);
+    }
+    
+    for (int i = 0; i < objects.size(); i++) {
+      objects.get(i).render(renderer, xZoom, xZoom);
     }
     
     renderer.render(graphics);
@@ -221,6 +221,10 @@ public class Game extends JFrame implements Runnable {
   
   public int getSelectedTile() {
     return selectedTileID;
+  }
+  
+  public List<MapObject> getMapObjects() {
+    return mapObjects;
   }
   
   public void run() {
