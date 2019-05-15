@@ -81,7 +81,7 @@ public class Game extends JFrame implements Runnable {
     worldMap = new WorldMap(new File("Map.txt"), tiles, tileSize, this);
     
     //load SDK GUI
-    sdk = new SDK(new File("SKD_Buttons.txt"), tileSize, xZoom, yZoom, this, tiles.getSprites());
+    sdk = new SDK(new File("SKD_Buttons.txt"), tileSize, xZoom, yZoom, this, tiles.getSprites(), sheet);
     
     
     //load Objectsd
@@ -99,9 +99,6 @@ public class Game extends JFrame implements Runnable {
     canvas.addMouseListener(mouseListener);
     canvas.addMouseMotionListener(mouseListener);
     canvas.addMouseWheelListener(mouseListener);
-    //testImage = loadImage("GrassTile.png");
-    //testSprite = sheet.getSprite(4, 2);
-    //testRectangle.generateGraphics(5, 0xFF0000);
   }
   
   
@@ -182,7 +179,6 @@ public class Game extends JFrame implements Runnable {
     
     MapObject currentObject = new MapObject(sheet, new Rectangle(currentObjectValues[0], currentObjectValues[1], currentObjectValues[2], currentObjectValues[3]), tileSize, x, y, xZoom, yZoom, selectedTileID);
   
-    System.out.println(currentObjectValues[4] * xZoom + " ; " + currentObjectValues[5] * yZoom + " ; " +  currentObjectValues[6] + " ; " +  currentObjectValues[7]);
     currentObject.setHitBox(currentObjectValues[4] * xZoom, currentObjectValues[5] * yZoom, currentObjectValues[6], currentObjectValues[7]);
     
     mapObjects.add(currentObject);

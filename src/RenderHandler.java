@@ -42,7 +42,7 @@ public class RenderHandler {
     }
   }
   
-  public void renderRectangle(Rectangle rectangle,Rectangle offSet, int xZoom, int yZoom, boolean fixed){
+  public void renderRectangle(Rectangle rectangle, Rectangle offSet, int xZoom, int yZoom, boolean fixed) {
     int[] rectanglePixels = rectangle.getPixels();
     if (rectanglePixels != null) {
       renderArray(rectanglePixels, rectangle.w, rectangle.h, rectangle.x + offSet.x, rectangle.y + offSet.y, xZoom, yZoom, fixed);
@@ -50,11 +50,18 @@ public class RenderHandler {
   }
   
   public void renderArray(int[] renderPixels, int renderWidth, int renderHeight, int xPos, int yPos, int xZoom, int yZoom, boolean fixed) {
-    for (int y = 0; y < renderHeight; y++)
-      for (int x = 0; x < renderWidth; x++)
-        for (int yZoomPos = 0; yZoomPos < yZoom; yZoomPos++)
-          for (int xZoomPos = 0; xZoomPos < xZoom; xZoomPos++)
-            setPixel(renderPixels[x + y * renderWidth], ((x * xZoom) + xPos + xZoomPos), ((y * yZoom) + yPos + yZoomPos), fixed);
+    if (xZoom > 0 && yZoom > 0) {
+      for (int y = 0; y < renderHeight; y++)
+        for (int x = 0; x < renderWidth; x++)
+          for (int yZoomPos = 0; yZoomPos < yZoom; yZoomPos++)
+            for (int xZoomPos = 0; xZoomPos < xZoom; xZoomPos++)
+              setPixel(renderPixels[x + y * renderWidth], ((x * xZoom) + xPos + xZoomPos), ((y * yZoom) + yPos + yZoomPos), fixed);
+    }
+    else if (xZoom < 0 && yZoom < 0) {
+      for (int y = 0; y < renderHeight/Math.abs(yZoom); y++)
+        for (int x = 0; x < renderWidth/Math.abs(xZoom); x++)
+          setPixel(renderPixels[(x + y * renderWidth)*Math.abs(xZoom)], (x + xPos), (y + yPos), fixed);
+    }
   }
   
   private void setPixel(int pixel, int x, int y, boolean fixed) {
@@ -74,14 +81,14 @@ public class RenderHandler {
       pixels[pixelIndex] = pixel;
     }
   }
-    
-    public Rectangle getCamera () {
-      return camera;
-    }
-    
-    public void clear () {
-      for (int i = 0; i < pixels.length; i++) {
-        pixels[i] = 0;
-      }
+  
+  public Rectangle getCamera() {
+    return camera;
+  }
+  
+  public void clear() {
+    for (int i = 0; i < pixels.length; i++) {
+      pixels[i] = 0;
     }
   }
+}

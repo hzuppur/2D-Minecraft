@@ -19,6 +19,7 @@ public class WorldMap {
     this.mapFile = mapFile;
     this.tileSize = tileSize;
     this.game = game;
+   
     try {
       Scanner scanner = new Scanner(mapFile);
       int currentLine = 0;
