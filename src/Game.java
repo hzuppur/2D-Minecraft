@@ -153,13 +153,13 @@ public class Game extends JFrame implements Runnable {
     y = (int) Math.floor((y + renderer.getCamera().y) / ((double) tileSize * yZoom));
     
     for (int i = 0; i < mapObjects.size(); i++) {
-      if (mapObjects.get(i).checkIfselected(x,y)){
+      if (mapObjects.get(i).checkIfselected(x, y)) {
         mapObjects.remove(i);
         clickedOnObject = true;
         break;
       }
     }
-    if (!clickedOnObject){
+    if (!clickedOnObject) {
       worldMap.removeTile(x, y);
     }
   }
@@ -181,8 +181,9 @@ public class Game extends JFrame implements Runnable {
     int[] currentObjectValues = (int[]) MapObjectsMap.get(selectedTileID);
     
     MapObject currentObject = new MapObject(sheet, new Rectangle(currentObjectValues[0], currentObjectValues[1], currentObjectValues[2], currentObjectValues[3]), tileSize, x, y, xZoom, yZoom, selectedTileID);
-    
-    currentObject.setHitBox(currentObjectValues[4] * xZoom, currentObjectValues[5] * yZoom, currentObjectValues[6] * xZoom, currentObjectValues[7] * yZoom);
+  
+    System.out.println(currentObjectValues[4] * xZoom + " ; " + currentObjectValues[5] * yZoom + " ; " +  currentObjectValues[6] + " ; " +  currentObjectValues[7]);
+    currentObject.setHitBox(currentObjectValues[4] * xZoom, currentObjectValues[5] * yZoom, currentObjectValues[6], currentObjectValues[7]);
     
     mapObjects.add(currentObject);
   }
@@ -209,10 +210,6 @@ public class Game extends JFrame implements Runnable {
     bufferStrategy.show();
     renderer.clear();
     
-    //renderer.renderImage(testImage, 0, 0, 5, 5);
-    //renderer.renderSprite(testSprite, 300, 300, 10, 10);
-    //renderer.renderRectangle(testRectangle, 1, 1);
-    //tiles.renderTile(2, renderer, 0,0,5,5);
   }
   
   public void changeTile(int tileID) {
@@ -260,6 +257,14 @@ public class Game extends JFrame implements Runnable {
   
   public RenderHandler getRenderer() {
     return renderer;
+  }
+  
+  public int getxZoom() {
+    return xZoom;
+  }
+  
+  public int getyZoom() {
+    return yZoom;
   }
   
   public static void main(String[] args) {

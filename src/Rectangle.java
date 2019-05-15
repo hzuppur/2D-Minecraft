@@ -66,17 +66,18 @@ public class Rectangle {
     return "[" + x + "," + y + "," + w + "," + h + "]";
   }
   
-  public boolean isOverlaping(Rectangle otherRect) {
-    // If one rectangle is on left side of other
+  public boolean isOverlaping(Rectangle otherRect, int xZoom, int yZoom) {
+    
     if (otherRect.h == 0 || otherRect.w == 0 || w == 0 || h == 0){
       return false;
     }
-    if (x > otherRect.x + otherRect.w + otherRect.h || otherRect.x > x + w + h) {
+    // If one rectangle is on left side of other
+    if (otherRect.x + otherRect.w *xZoom < x || x + w*xZoom < otherRect.x) {
       return false;
     }
     
     // If one rectangle is above other
-    if (y > otherRect.y + otherRect.w + otherRect.h || otherRect.y > y + w + h) {
+    if (y > otherRect.y + otherRect.h * yZoom || y + h*yZoom < otherRect.y) {
       return false;
     }
     

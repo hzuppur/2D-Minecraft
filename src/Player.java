@@ -2,7 +2,7 @@ import java.util.List;
 
 public class Player implements GameObject {
   private Rectangle playerRectangel;
-  private int speed = 10;
+  private int speed = 7;
   private Sprite sprite;
   private AnimatedSprite animatedSprite = null;
   //0-down, 1-left, 2-right, 3-up
@@ -17,7 +17,7 @@ public class Player implements GameObject {
       animatedSprite = (AnimatedSprite) sprite;
     }
     updateDirection();
-    playerRectangel = new Rectangle(32, 16, 32, 50);
+    playerRectangel = new Rectangle(32, 16, 25, 50);
     playerRectangel.generateGraphics(3, 0xFF0000);
   }
   
@@ -37,7 +37,7 @@ public class Player implements GameObject {
     } else {
       renderer.renderRectangle(playerRectangel, xZoom, yZoom, false);
     }
-    //renderer.renderRectangle(playerRectangel, xZoom, yZoom, false);
+    renderer.renderRectangle(playerRectangel, xZoom, yZoom, false);
   }
   
   //call whatever mouse is clicked on Canvas
@@ -56,37 +56,48 @@ public class Player implements GameObject {
       newPlayerPos.x -= speed;
       didMoved = true;
       newDirection = 1;
+      if (!checkCollision(newPlayerPos)) {
+        playerRectangel.x = newPlayerPos.x;
+        playerRectangel.y = newPlayerPos.y;
+      }
     }
     if (keyListener.right()) {
       newPlayerPos.x += speed;
       didMoved = true;
       newDirection = 2;
+      if (!checkCollision(newPlayerPos)) {
+        playerRectangel.x = newPlayerPos.x;
+        playerRectangel.y = newPlayerPos.y;
+      }
     }
     if (keyListener.up()) {
       newPlayerPos.y -= speed;
       didMoved = true;
       newDirection = 3;
+      if (!checkCollision(newPlayerPos)) {
+        playerRectangel.x = newPlayerPos.x;
+        playerRectangel.y = newPlayerPos.y;
+      }
     }
     if (keyListener.down()) {
       newPlayerPos.y += speed;
       didMoved = true;
       newDirection = 0;
+      if (!checkCollision(newPlayerPos)) {
+        playerRectangel.x = newPlayerPos.x;
+        playerRectangel.y = newPlayerPos.y;
+      }
     }
     
-    if(!checkCollision(newPlayerPos)){
-      playerRectangel.x = newPlayerPos.x;
-      playerRectangel.y = newPlayerPos.y;
-      
-      if (newDirection != direction) {
-        direction = newDirection;
-        updateDirection();
-      }
-      uptadeCamera(game.getRenderer().getCamera());
-      if (didMoved) {
-        animatedSprite.update(game);
-      } else {
-        animatedSprite.reset();
-      }
+    if (newDirection != direction) {
+      direction = newDirection;
+      updateDirection();
+    }
+    uptadeCamera(game.getRenderer().getCamera());
+    if (didMoved) {
+      animatedSprite.update(game);
+    } else {
+      animatedSprite.reset();
     }
   }
   
@@ -98,12 +109,12 @@ public class Player implements GameObject {
   private boolean checkCollision(Rectangle newPlayerPos) {
     List<MapObject> mapObjects = game.getMapObjects();
     
-    if (mapObjects.size() < 1){
+    if (mapObjects.size() < 1) {
       return false;
     }
     for (int i = 0; i < mapObjects.size(); i++) {
       
-      if (newPlayerPos.isOverlaping(mapObjects.get(i).getHitBox())) {
+      if (newPlayerPos.isOverlaping(mapObjects.get(i).getHitBox(), game.getxZoom(), game.getyZoom())) {
         return true;
       }
     }
