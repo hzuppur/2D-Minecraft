@@ -37,7 +37,7 @@ public class Player implements GameObject {
     } else {
       renderer.renderRectangle(playerRectangel, xZoom, yZoom, false);
     }
-    renderer.renderRectangle(playerRectangel, xZoom, yZoom, false);
+    //renderer.renderRectangle(playerRectangel, xZoom, yZoom, false);
   }
   
   //call whatever mouse is clicked on Canvas

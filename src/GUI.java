@@ -2,10 +2,10 @@ import java.io.File;
 
 public class GUI implements GameObject
 {
-  private Sprite backgroundSprite;
-  private GUIButton[] buttons;
-  private Rectangle rect = new Rectangle();
-  private boolean fixed;
+  protected Sprite backgroundSprite;
+  protected GUIButton[] buttons;
+  protected Rectangle rect = new Rectangle();
+  protected boolean fixed;
   
   public GUI(Sprite backgroundSprite, GUIButton[] buttons, int x, int y, boolean fixed)
   {
@@ -73,6 +73,7 @@ public class GUI implements GameObject
     
     return stopChecking;
   }
+  
   public void setScroll(int scrollAmout) {
     rect.y += scrollAmout;
   }

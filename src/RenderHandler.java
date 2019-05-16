@@ -61,6 +61,10 @@ public class RenderHandler {
       for (int y = 0; y < renderHeight/Math.abs(yZoom); y++)
         for (int x = 0; x < renderWidth/Math.abs(xZoom); x++)
           setPixel(renderPixels[(x + y * renderWidth)*Math.abs(xZoom)], (x + xPos), (y + yPos), fixed);
+    }else {
+      for (int y = 0; y < renderHeight; y++)
+        for (int x = 0; x < renderWidth; x++)
+          setPixel(renderPixels[(x + y * renderWidth)], (x + xPos), (y + yPos), fixed);
     }
   }
   

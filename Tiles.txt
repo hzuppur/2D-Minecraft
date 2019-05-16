@@ -2,3 +2,16 @@
 //Nature
 0.grass-1-12
 1.soil -4-21
+2.soilTL-3-20
+3.soilT-4-20
+4.soilTR-5-20
+5.soilML-3-21
+6.soilMR-5-21
+7.soilBL-3-22
+8.soilB -4-22
+9.soilBR-5-22
+10.water-2-12
+11.sand -10-18
+12.sand -11-18
+13.sand -10-19
+14.sand -11-19

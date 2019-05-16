@@ -17,6 +17,7 @@ public class Game extends JFrame implements Runnable {
   public static int alpha = 0xFFFF00DC;
   
   private Canvas canvas = new Canvas();
+  
   private RenderHandler renderer;
   
   private SpriteSheet sheet;
@@ -27,6 +28,7 @@ public class Game extends JFrame implements Runnable {
   private Tiles tiles;
   private WorldMap worldMap;
   private SDK sdk;
+  private StartScreen startScreen;
   
   private List<GameObject> objects;
   private List<MapObject> mapObjects;
@@ -39,6 +41,8 @@ public class Game extends JFrame implements Runnable {
   private int xZoom = 2;
   private int yZoom = 2;
   private int tileSize = 32;
+  
+  private boolean inStart = false;
   
   public Game() {
     //Make our program shutdown when we exit out.
@@ -83,6 +87,11 @@ public class Game extends JFrame implements Runnable {
     //load SDK GUI
     sdk = new SDK(new File("SKD_Buttons.txt"), tileSize, xZoom, yZoom, this, tiles.getSprites(), sheet);
     
+    BufferedImage StartButtonImage = loadImage("recourses\\play.png");
+    Sprite StartButtonSprite = new Sprite(StartButtonImage);
+    StartScreenButton start = new StartScreenButton(StartButtonSprite, new Rectangle(0,0,StartButtonSprite.width,StartButtonSprite.height), true, this);
+    StartScreenButton[] test = new StartScreenButton[]{start};
+    startScreen = new StartScreen(test, 100,100,true);
     
     //load Objectsd
     objects = new ArrayList<>();
@@ -124,6 +133,8 @@ public class Game extends JFrame implements Runnable {
   public void leftClick(int x, int y) {
     Rectangle mouseRectangle = new Rectangle(x, y, 1, 1);
     boolean stopChecking = false;
+    
+    startScreen.handleMouseClick(mouseRectangle, renderer.getCamera(), xZoom, yZoom);
     
     for (int i = 0; i < objects.size(); i++) {
       if (!stopChecking)
@@ -189,17 +200,21 @@ public class Game extends JFrame implements Runnable {
     BufferStrategy bufferStrategy = canvas.getBufferStrategy();
     Graphics graphics = bufferStrategy.getDrawGraphics();
     super.paint(graphics);
-    
-    worldMap.render(renderer, xZoom, yZoom);
-    
-    for (int i = 0; i < mapObjects.size(); i++) {
-      mapObjects.get(i).render(renderer, xZoom, xZoom);
+    if (!inStart){
+      worldMap.render(renderer, xZoom, yZoom);
+  
+      for (int i = 0; i < mapObjects.size(); i++) {
+        mapObjects.get(i).render(renderer, xZoom, xZoom);
+      }
+  
+      for (int i = 0; i < objects.size(); i++) {
+        objects.get(i).render(renderer, xZoom, xZoom);
+      }
+    }else {
+      startScreen.render(renderer, xZoom, yZoom);
     }
     
-    for (int i = 0; i < objects.size(); i++) {
-      objects.get(i).render(renderer, xZoom, xZoom);
-    }
-    
+  
     renderer.render(graphics);
     
     graphics.dispose();
@@ -261,6 +276,10 @@ public class Game extends JFrame implements Runnable {
   
   public int getyZoom() {
     return yZoom;
+  }
+  
+  public void setInStart(boolean inStart) {
+    this.inStart = inStart;
   }
   
   public static void main(String[] args) {
