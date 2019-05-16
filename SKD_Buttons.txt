@@ -1,4 +1,4 @@
-//Asset name-ID-SpriteID
+//Tile name-ID-SpriteID
 //MapObjects name-ID-SpriteStartX-SpriteStartY-width-height-HitBoxStartX-HitBoxStartY-HitBoxWidth-HitBoxHeight
 
 //Nature
@@ -33,3 +33,21 @@ GrainBag   -27-4-5-1-1-0-0-9-9
 Corn       -28-29-6-1-2-0-0-0-0
 Potato     -29-24-7-1-1-0-0-0-0
 Tomato     -30-23-6-1-2-0-0-0-0
+sand       -31-11
+sand       -32-12
+sand       -33-13
+sand       -34-14
+shoreTL    -35-15
+shoreT     -36-16
+shoreTR    -37-17
+shoreML    -38-18
+shoreM     -39-19
+shoreMR    -40-20
+shoreBL    -41-21
+shoreB     -42-22
+shoreBR    -43-23
+sand       -44-24
+soliturn   -45-25
+soliturn   -46-26
+soliturn   -47-27
+soliturn   -48-28

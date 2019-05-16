@@ -15,3 +15,17 @@
 12.sand -11-18
 13.sand -10-19
 14.sand -11-19
+15.shoreTL-9-20
+16.shoreT-10-20
+17.shoreTR-11-20
+18.shoreML-9-21
+19.shoreM-10-21
+20.shoreMR-11-21
+21.shoreBL-9-22
+22.shoreB-10-20
+23.shoreBR-11-20
+24.sand   -9-23
+25.soliturn-4-18
+26.soliturn-5-18
+27.soliturn-4-19
+28.soliturn-5-19

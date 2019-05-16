@@ -60,9 +60,11 @@ public class SDK {
           Rectangle tileRectangle = new Rectangle(x, y + i * (tileSize * xZoom + 1), tileSize * xZoom, tileSize * yZoom);
           //buttons.add(new SDKButton(game, Integer.parseInt(splitLine[1]), tileSprites[Integer.parseInt(splitLine[2])], tileRectangle));
           if (icon == null)
-            buttons.add(new SDKButton(game, Integer.parseInt(splitLine[1]), tileSprites[i], tileRectangle));
+            buttons.add(new SDKButton(game, Integer.parseInt(splitLine[1]), tileSprites[Integer.parseInt(splitLine[2])], tileRectangle));
           else
             buttons.add(new SDKButton(game, Integer.parseInt(splitLine[1]), icon, tileRectangle));
+          
+          icon = null;
           
           spriteID.add(Integer.parseInt(splitLine[2]));
           
