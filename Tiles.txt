@@ -22,8 +22,8 @@
 19.shoreM-10-21
 20.shoreMR-11-21
 21.shoreBL-9-22
-22.shoreB-10-20
-23.shoreBR-11-20
+22.shoreB-10-22
+23.shoreBR-11-22
 24.sand   -9-23
 25.soliturn-4-18
 26.soliturn-5-18
