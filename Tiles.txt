@@ -1,31 +1,44 @@
 //TileName-SpriteX-SpriteY
 //Nature
-0.grass-1-12
-1.soil -4-21
-2.soilTL-3-20
-3.soilT-4-20
-4.soilTR-5-20
-5.soilML-3-21
-6.soilMR-5-21
-7.soilBL-3-22
-8.soilB -4-22
-9.soilBR-5-22
-10.water-2-12
-11.sand -10-18
-12.sand -11-18
-13.sand -10-19
-14.sand -11-19
-15.shoreTL-9-20
-16.shoreT-10-20
-17.shoreTR-11-20
-18.shoreML-9-21
-19.shoreM-10-21
-20.shoreMR-11-21
-21.shoreBL-9-22
-22.shoreB-10-22
-23.shoreBR-11-22
-24.sand   -9-23
-25.soliturn-4-18
-26.soliturn-5-18
-27.soliturn-4-19
-28.soliturn-5-19
+0.grass        -1-12
+1.soil         -4-21
+2.soilTL       -3-20
+3.soilT        -4-20
+4.soilTR       -5-20
+5.soilML       -3-21
+6.soilMR       -5-21
+7.soilBL       -3-22
+8.soilB        -4-22
+9.soilBR       -5-22
+10.water       -2-12
+11.sand        -10-18
+12.sand        -11-18
+13.sand        -10-19
+14.sand        -11-19
+15.shoreTL     -9-20
+16.shoreT      -10-20
+17.shoreTR     -11-20
+18.shoreML     -9-21
+19.shoreM      -10-21
+20.shoreMR     -11-21
+21.shoreBL     -9-22
+22.shoreB      -10-22
+23.shoreBR     -11-22
+24.sand        -9-23
+25.soliturn    -4-18
+26.soliturn    -5-18
+27.soliturn    -4-19
+28.soliturn    -5-19
+29.landsandTR  -23-26
+30.landsandT   -24-26
+31.landsandTL  -25-26
+32.landsandMR  -23-27
+33.landsandM   -24-27
+34.landsandML  -25-27
+35.landsandBR  -23-28
+36.landsandB   -24-28
+37.landsandBL  -25-28
+38.sandLandTR  -24-24
+38.sandLandTL  -25-24
+38.sandLandBR  -24-25
+38.sandLandBL  -25-25
