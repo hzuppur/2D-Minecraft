@@ -1,2 +1,2 @@
 # 2D-Minecraft 🧙‍♂️
-OOPi projekt millel pole veel nime
+OOPi projekt Javas 100%.
