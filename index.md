@@ -6,9 +6,12 @@ Haan ja Johanna
 ei teadnud, mida teha alguses ja *nuudlid said otsa*
 # Hea
 a good game
+
 **dont kno how to play?
-worry no more**
-*V V V V V V V V*
+
+**worry no more**
+
+V V V V V V V V
 # HOW TO GAME
 ## Step 1
 Open the game
