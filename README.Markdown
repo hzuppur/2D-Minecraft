@@ -4,7 +4,6 @@ Mäng on tehtud kasutades jframe'i
 Kaks nunnupalli
 # probleemid
 nuudlid said otsa
-
 # HOW TO GAME
 ## Step 1
 Open the game
