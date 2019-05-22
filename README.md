@@ -1,5 +1,5 @@
 # 2D-Minecraft 🧙‍♂️
-Mäng on tehtud kasutades jframe'i
+Mäng on tehtud kasutades jframe'i 
 # Tiim
 Haan ja Johanna
 # probleemid
