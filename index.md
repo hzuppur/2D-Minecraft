@@ -19,6 +19,6 @@ Open the game
 ## Step 2
 Play the game
 ## Step 3
-Save the game (Ctrl + s **quick and easy!!!**)
+Save the game (Ctrl + s **quick and easy!!!**) 👌
 # Hell Yeah!
 
