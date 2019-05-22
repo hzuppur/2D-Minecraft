@@ -1,2 +1,3 @@
 # 2D-Minecraft 🧙‍♂️
-OOPi projekt Javas 100%.
+2D Versioon Minecraftist.
+Mäng on tehtud kasutades jframei
