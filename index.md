@@ -1,6 +1,6 @@
 # 2D-Minecraft 🧙‍♂️
 ## Mis see on?
-Mäng, mis on nagu Minecraft, aga 2D. Lisa blokke, eemalda blokke, loo maailma!
+Mäng, mis on nagu Minecraft, aga ainult kahes dimensioonis. Lisa blokke, eemalda blokke, loo maailma!
 
 *Disclaimer: Kellegagi veel kakelda ei saa.*
 
