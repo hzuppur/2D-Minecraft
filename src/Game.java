@@ -66,11 +66,11 @@ public class Game extends JFrame implements Runnable {
     renderer = new RenderHandler(getWidth(), getHeight());
     
     //load Assets
-    BufferedImage sheetImage = loadImage("recourses\\TileSheets\\SpriteSheet.png");
+    BufferedImage sheetImage = loadImage("recourses/TileSheets/SpriteSheet.png");
     sheet = new SpriteSheet(sheetImage);
     sheet.loadSprites(tileSize, tileSize);
     
-    BufferedImage playerSheetImage = loadImage("recourses\\Players\\rincewind.png");
+    BufferedImage playerSheetImage = loadImage("recourses/Players/rincewind.png");
     playerSheet = new SpriteSheet(playerSheetImage);
     playerSheet.loadSprites(32, 48);
     
@@ -87,7 +87,7 @@ public class Game extends JFrame implements Runnable {
     //load SDK GUI
     sdk = new SDK(new File("SKD_Buttons.txt"), tileSize, xZoom, yZoom, this, tiles.getSprites(), sheet);
     
-    BufferedImage StartButtonImage = loadImage("recourses\\play.png");
+    BufferedImage StartButtonImage = loadImage("recourses/play.png");
     Sprite StartButtonSprite = new Sprite(StartButtonImage);
     StartScreenButton start = new StartScreenButton(StartButtonSprite, new Rectangle(0,0,StartButtonSprite.width,StartButtonSprite.height), true, this);
     StartScreenButton[] test = new StartScreenButton[]{start};

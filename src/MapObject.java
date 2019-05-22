@@ -28,7 +28,7 @@ public class MapObject implements GameObject {
   
   public void setHitBox(int inSpriteX, int inSpriteY, int width, int height) {
     hitBox = new Rectangle(objectRect.x + inSpriteX, objectRect.y + inSpriteY, width * xZoom, height * yZoom);
-    hitBox.generateGraphics(3, 0xFF0000);
+    hitBox.generateGraphics(1, 0xFF0000);
   }
   
   public Rectangle getObjectRect() {

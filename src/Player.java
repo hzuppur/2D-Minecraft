@@ -17,7 +17,7 @@ public class Player implements GameObject {
       animatedSprite = (AnimatedSprite) sprite;
     }
     updateDirection();
-    playerRectangel = new Rectangle(32, 16, 25, 50);
+    playerRectangel = new Rectangle(32, 16, 20, 20);
     playerRectangel.generateGraphics(3, 0xFF0000);
   }
   
@@ -31,7 +31,7 @@ public class Player implements GameObject {
   //call every time physicaly possible
   public void render(RenderHandler renderer, int xZoom, int yZoom) {
     if (animatedSprite != null) {
-      renderer.renderSprite(animatedSprite, playerRectangel.x, playerRectangel.y, xZoom, yZoom, false);
+      renderer.renderSprite(animatedSprite, playerRectangel.x - playerRectangel.w / 2, playerRectangel.y - playerRectangel.h * 3, xZoom, yZoom, false);
     } else if (sprite != null) {
       renderer.renderSprite(sprite, playerRectangel.x, playerRectangel.y, xZoom, yZoom, false);
     } else {
