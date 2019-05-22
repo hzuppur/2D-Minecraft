@@ -2,7 +2,7 @@
 ## Mis see on?
 Mäng, mis on nagu Minecraft, aga 2D. Lisa blokke, eemalda blokke, loo maailma!
 
-*Disclaimer: Kellegagi veel kakelda ei saa.
+*Disclaimer: Kellegagi veel kakelda ei saa.*
 
 Mäng on tehtud kasutades jframe'i.
 # Tiim
