@@ -1,2 +1,3 @@
 theme: jekyll-theme-cayman
-page-img: "/background.png"
+page-img: "background.png"
+navbar-img: "background.png"
