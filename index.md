@@ -22,3 +22,5 @@ Play the game
 Save the game (Ctrl + s **quick and easy!!!**) 👌
 # Hell Yeah!
 
+# Tahad 2019 aasta parimat mängu ise proovida?
+[link](http://bit.ly/2D-Minecraft "Kliki siia, et tõmmata 2D-Minecraft")
