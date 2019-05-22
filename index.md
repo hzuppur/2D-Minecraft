@@ -8,7 +8,7 @@ Mäng on tehtud kasutades jframe'i.
 # Tiim
 Hain ja Johanna
 
-**dont kno how to play?
+**dont kno how to play?**
 
 **worry no more**
 
