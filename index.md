@@ -1,11 +1,12 @@
 # 2D-Minecraft 🧙‍♂️
-Mäng on tehtud kasutades jframe'i
+## Mis see on?
+Mäng, mis on nagu Minecraft, aga 2D. Lisa blokke, eemalda blokke, loo maailma!
+
+*Disclaimer: Kellegagi veel kakelda ei saa.
+
+Mäng on tehtud kasutades jframe'i.
 # Tiim
-Haan ja Johanna
-# probleemid
-ei teadnud, mida teha alguses ja *nuudlid said otsa*
-# Hea
-a good game
+Hain ja Johanna
 
 **dont kno how to play?
 
