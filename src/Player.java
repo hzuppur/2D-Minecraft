@@ -13,7 +13,7 @@ public class Player implements GameObject {
     this.sprite = sprite;
     this.game = game;
     
-    if (sprite != null && sprite instanceof AnimatedSprite) {
+    if (sprite instanceof AnimatedSprite) {
       animatedSprite = (AnimatedSprite) sprite;
     }
     updateDirection();
@@ -37,6 +37,7 @@ public class Player implements GameObject {
     } else {
       renderer.renderRectangle(playerRectangel, xZoom, yZoom, false);
     }
+    //Hitbox rendering
     //renderer.renderRectangle(playerRectangel, xZoom, yZoom, false);
   }
   
@@ -119,5 +120,9 @@ public class Player implements GameObject {
       }
     }
     return false;
+  }
+  
+  public Rectangle getPlayerRectangel() {
+    return playerRectangel;
   }
 }

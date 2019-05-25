@@ -1,4 +1,4 @@
-public class MapObject implements GameObject {
+public class MapObject implements GameObject{
   private SpriteSheet sheet;
   private Rectangle objectRect;
   private Rectangle spriteRect;

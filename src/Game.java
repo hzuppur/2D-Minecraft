@@ -7,9 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.Runnable;
 import java.lang.Thread;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
@@ -32,6 +30,7 @@ public class Game extends JFrame implements Runnable {
   
   private List<GameObject> objects;
   private List<MapObject> mapObjects;
+  private TreeMap<Integer, List<MapObject>> mapObjectsTree = new TreeMap<>();
   private Map MapObjectsMap;
   private KeyBoardListener keyListener = new KeyBoardListener(this);
   private MouseEventListener mouseListener = new MouseEventListener(this);
@@ -89,9 +88,9 @@ public class Game extends JFrame implements Runnable {
     
     BufferedImage StartButtonImage = loadImage("recourses/play.png");
     Sprite StartButtonSprite = new Sprite(StartButtonImage);
-    StartScreenButton start = new StartScreenButton(StartButtonSprite, new Rectangle(0,0,StartButtonSprite.width,StartButtonSprite.height), true, this);
+    StartScreenButton start = new StartScreenButton(StartButtonSprite, new Rectangle(0, 0, StartButtonSprite.width, StartButtonSprite.height), true, this);
     StartScreenButton[] test = new StartScreenButton[]{start};
-    startScreen = new StartScreen(test, 100,100,true);
+    startScreen = new StartScreen(test, 100, 100, true);
     
     //load Objectsd
     objects = new ArrayList<>();
@@ -189,32 +188,47 @@ public class Game extends JFrame implements Runnable {
     int[] currentObjectValues = (int[]) MapObjectsMap.get(selectedTileID);
     
     MapObject currentObject = new MapObject(sheet, new Rectangle(currentObjectValues[0], currentObjectValues[1], currentObjectValues[2], currentObjectValues[3]), tileSize, x, y, xZoom, yZoom, selectedTileID);
-  
+    
     currentObject.setHitBox(currentObjectValues[4] * xZoom, currentObjectValues[5] * yZoom, currentObjectValues[6], currentObjectValues[7]);
     
     mapObjects.add(currentObject);
+    
+    //checks if mapObjectTree contains Y coordinate
+    mapObjectsTree.computeIfAbsent(y, k -> new ArrayList<>());
+    //adds object
+    mapObjectsTree.get(y).add(currentObject);
   }
   
   
   public void render() {
+    boolean playerRendered = false;
     BufferStrategy bufferStrategy = canvas.getBufferStrategy();
     Graphics graphics = bufferStrategy.getDrawGraphics();
     super.paint(graphics);
-    if (!inStart){
-      worldMap.render(renderer, xZoom, yZoom);
-  
-      for (int i = 0; i < mapObjects.size(); i++) {
-        mapObjects.get(i).render(renderer, xZoom, xZoom);
+    
+    worldMap.render(renderer, xZoom, yZoom);
+    
+    //Render map objects
+    for (Map.Entry<Integer, List<MapObject>> entry : mapObjectsTree.entrySet()) {
+      List<MapObject> value = entry.getValue();
+      int yPos = entry.getKey();
+      int playerYpos = Math.floorDiv((player.getPlayerRectangel().y + player.getPlayerRectangel().h), tileSize * yZoom);
+      System.out.println(playerYpos);
+      //if player y is same as objects y render player
+      if (yPos == playerYpos) {
+        player.render(renderer, xZoom, yZoom);
+        playerRendered = true;
       }
-  
-      for (int i = 0; i < objects.size(); i++) {
-        objects.get(i).render(renderer, xZoom, xZoom);
-      }
-    }else {
-      startScreen.render(renderer, xZoom, yZoom);
+      
+      for (int i = 0; i < value.size(); i++)
+        value.get(i).render(renderer, xZoom, yZoom);
     }
     
-  
+    if (!playerRendered)
+      player.render(renderer, xZoom, yZoom);
+    //renders GUI
+    objects.get(1).render(renderer, xZoom, yZoom);
+    
     renderer.render(graphics);
     
     graphics.dispose();
