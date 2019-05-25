@@ -10,6 +10,7 @@ public class MapObject implements GameObject{
   private int tileIDX;
   private int tileIDY;
   private int ID;
+  private int spriteXoffset;
   
   public MapObject(SpriteSheet sheet, Rectangle spriteRect, int tileSize, int xPos, int yPos, int xZoom, int yZoom, int ID) {
     this.tileWidth = tileSize * xZoom;
@@ -24,10 +25,11 @@ public class MapObject implements GameObject{
     
     objectRect = new Rectangle(xPos * tileWidth - (spriteRect.w - 1) * tileWidth, yPos * tileHeight - (spriteRect.h - 1) * tileHeight, spriteRect.w * tileSize, spriteRect.h * tileSize);
     objectRect.generateGraphics(3, 0xFF0000);
+    this.spriteXoffset = objectRect.w/tileWidth/xZoom;
   }
   
   public void setHitBox(int inSpriteX, int inSpriteY, int width, int height) {
-    hitBox = new Rectangle(objectRect.x + inSpriteX, objectRect.y + inSpriteY, width * xZoom, height * yZoom);
+    hitBox = new Rectangle(objectRect.x + inSpriteX + spriteXoffset * tileWidth, objectRect.y + inSpriteY, width * xZoom, height * yZoom);
     hitBox.generateGraphics(1, 0xFF0000);
   }
   
@@ -40,18 +42,20 @@ public class MapObject implements GameObject{
   }
   
   public boolean checkIfselected(int xPos, int yPos) {
-    if (xPos == tileIDX && yPos == tileIDY)
+    //System.out.println(tileIDX + objectRect.w/32/2 + " : " + tileIDY);
+    if (xPos == tileIDX && yPos == tileIDY) {
       return true;
+    }
     return false;
   }
   
   public void render(RenderHandler renderer, int xZoom, int yZoom) {
     for (int y = 0; y < spriteRect.h; y++) {
       for (int x = 0; x < spriteRect.w; x++) {
-        renderer.renderSprite(sheet.getSprite(spriteRect.x + x, spriteRect.y + y), objectRect.x + x * tileWidth, objectRect.y + y * tileHeight, xZoom, yZoom, false);
+        renderer.renderSprite(sheet.getSprite(spriteRect.x + x, spriteRect.y + y), objectRect.x + (x + spriteXoffset) * tileWidth, objectRect.y + y * tileHeight, xZoom, yZoom, false);
       }
     }
-    //renderer.renderRectangle(hitBox, xZoom, yZoom, false);
+    renderer.renderRectangle(hitBox, xZoom, yZoom, false);
   }
   
   public void update(Game game) {

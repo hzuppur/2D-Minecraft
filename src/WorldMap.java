@@ -2,12 +2,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public class WorldMap {
   private Tiles tileSet;
   private int fillTileID = -1;
   private List<MappedTile> mappedTiles = new ArrayList<>();
-  private List<MapObject> mapObjects;
+  private List<MapObject> mapObjects = new ArrayList<>();
   private HashMap<Integer, String> comments = new HashMap<Integer, String>();
   private File mapFile;
   private int tileSize;
@@ -93,7 +94,11 @@ public class WorldMap {
   
   public void saveMap() {
     try {
-      mapObjects = game.getMapObjects();
+      ConcurrentSkipListMap<Integer, List<MapObject>> mapObjectsMapped = game.getMapObjects();
+      for (Map.Entry<Integer, List<MapObject>> entry : mapObjectsMapped.entrySet()) {
+        List<MapObject> value = entry.getValue();
+        mapObjects.addAll(value);
+      }
       
       int currentLine = 0;
       

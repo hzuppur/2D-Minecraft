@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.Runnable;
 import java.lang.Thread;
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
@@ -29,8 +30,7 @@ public class Game extends JFrame implements Runnable {
   private StartScreen startScreen;
   
   private List<GameObject> objects;
-  private List<MapObject> mapObjects;
-  private TreeMap<Integer, List<MapObject>> mapObjectsTree = new TreeMap<>();
+  private ConcurrentSkipListMap<Integer, List<MapObject>> mapObjects = new ConcurrentSkipListMap<>();
   private Map MapObjectsMap;
   private KeyBoardListener keyListener = new KeyBoardListener(this);
   private MouseEventListener mouseListener = new MouseEventListener(this);
@@ -80,7 +80,6 @@ public class Game extends JFrame implements Runnable {
     tiles = new Tiles(new File("Tiles.txt"), sheet);
     
     //load worldMap
-    mapObjects = new ArrayList<>();
     worldMap = new WorldMap(new File("Map.txt"), tiles, tileSize, this);
     
     //load SDK GUI
@@ -95,8 +94,8 @@ public class Game extends JFrame implements Runnable {
     //load Objectsd
     objects = new ArrayList<>();
     player = new Player(playerAnimations, this);
-    objects.add(player);
     objects.add(sdk.getGui());
+    objects.add(player);
     MapObjectsMap = sdk.getMapObjects();
     worldMap.loadObjects();
     
@@ -159,17 +158,26 @@ public class Game extends JFrame implements Runnable {
     x = (int) Math.floor((x + renderer.getCamera().x) / ((double) tileSize * xZoom));
     y = (int) Math.floor((y + renderer.getCamera().y) / ((double) tileSize * yZoom));
     
-    for (int i = 0; i < mapObjects.size(); i++) {
-      if (mapObjects.get(i).checkIfselected(x, y)) {
-        mapObjects.remove(i);
-        clickedOnObject = true;
-        break;
+    
+  
+    for (Map.Entry<Integer, List<MapObject>> entry : mapObjects.entrySet()) {
+      List<MapObject> value = entry.getValue();
+      System.out.println("MOUSE: " + x + " : " + y);
+      for (int i = 0; i < value.size(); i++) {
+        if (value.get(i).checkIfselected(x, y)) {
+          value.remove(i);
+          clickedOnObject = true;
+          break;
+        }
       }
     }
+    
     if (!clickedOnObject) {
       worldMap.removeTile(x, y);
     }
   }
+  
+  
   
   public void mouseWeel(boolean up) {
     if (up)
@@ -191,17 +199,16 @@ public class Game extends JFrame implements Runnable {
     
     currentObject.setHitBox(currentObjectValues[4] * xZoom, currentObjectValues[5] * yZoom, currentObjectValues[6], currentObjectValues[7]);
     
-    mapObjects.add(currentObject);
+    //mapObjects.add(currentObject);
     
     //checks if mapObjectTree contains Y coordinate
-    mapObjectsTree.computeIfAbsent(y, k -> new ArrayList<>());
+    mapObjects.computeIfAbsent(y, k -> new ArrayList<>());
     //adds object
-    mapObjectsTree.get(y).add(currentObject);
+    mapObjects.get(y).add(currentObject);
   }
   
   
   public void render() {
-    boolean playerRendered = false;
     BufferStrategy bufferStrategy = canvas.getBufferStrategy();
     Graphics graphics = bufferStrategy.getDrawGraphics();
     super.paint(graphics);
@@ -209,28 +216,10 @@ public class Game extends JFrame implements Runnable {
     worldMap.render(renderer, xZoom, yZoom);
     
     //Render map objects
-    for (Map.Entry<Integer, List<MapObject>> entry : mapObjectsTree.entrySet()) {
-      List<MapObject> value = entry.getValue();
-      int yPos = entry.getKey();
-      int playerYpos = Math.floorDiv((player.getPlayerRectangel().y + player.getPlayerRectangel().h), tileSize * yZoom);
-      
-      //if player y is same as objects y render player
-      if (yPos >= playerYpos) {
-        if (!playerRendered) {
-          player.render(renderer, xZoom, yZoom);
-          playerRendered = true;
-        }
-      }
-      
-      for (int i = 0; i < value.size(); i++)
-        value.get(i).render(renderer, xZoom, yZoom);
-    }
-    
-    if (!playerRendered)
-      player.render(renderer, xZoom, yZoom);
+    renderMap();
     
     //renders GUI
-    objects.get(1).render(renderer, xZoom, yZoom);
+    objects.get(0).render(renderer, xZoom, yZoom);
     
     renderer.render(graphics);
     
@@ -240,16 +229,35 @@ public class Game extends JFrame implements Runnable {
     
   }
   
+  private void renderMap(){
+    boolean playerRendered = false;
+    
+    for (Map.Entry<Integer, List<MapObject>> entry : mapObjects.entrySet()) {
+      List<MapObject> value = entry.getValue();
+      int yPos = entry.getKey();
+      int playerYpos = Math.floorDiv((player.getPlayerRectangel().y + player.getPlayerRectangel().h), tileSize * yZoom);
+    
+      //if player y is same as objects y render player
+      if (yPos >= playerYpos) {
+        if (!playerRendered) {
+          player.render(renderer, xZoom, yZoom);
+          playerRendered = true;
+        }
+      }
+    
+      for (int i = 0; i < value.size(); i++)
+        value.get(i).render(renderer, xZoom, yZoom);
+    }
+    if (!playerRendered)
+      player.render(renderer, xZoom, yZoom);
+  }
+  
   public void changeTile(int tileID) {
     selectedTileID = tileID;
   }
   
   public int getSelectedTile() {
     return selectedTileID;
-  }
-  
-  public List<MapObject> getMapObjects() {
-    return mapObjects;
   }
   
   public void run() {
@@ -293,6 +301,14 @@ public class Game extends JFrame implements Runnable {
   
   public int getyZoom() {
     return yZoom;
+  }
+  
+  public ConcurrentSkipListMap<Integer, List<MapObject>> getMapObjects() {
+    return mapObjects;
+  }
+  
+  public int getTileSize() {
+    return tileSize;
   }
   
   public void setInStart(boolean inStart) {

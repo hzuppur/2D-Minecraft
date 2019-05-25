@@ -1,4 +1,6 @@
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public class Player implements GameObject {
   private Rectangle playerRectangel;
@@ -108,17 +110,26 @@ public class Player implements GameObject {
   }
   
   private boolean checkCollision(Rectangle newPlayerPos) {
-    List<MapObject> mapObjects = game.getMapObjects();
+    ConcurrentSkipListMap<Integer, List<MapObject>> mapObjects = game.getMapObjects();
+    int playerYpos = Math.floorDiv((playerRectangel.y + playerRectangel.h), game.getyZoom() * game.getTileSize());
     
     if (mapObjects.size() < 1) {
       return false;
     }
-    for (int i = 0; i < mapObjects.size(); i++) {
+    for (Map.Entry<Integer, List<MapObject>> entry : mapObjects.entrySet()) {
+      List<MapObject> value = entry.getValue();
+      int yPosObjects = entry.getKey();
+      //checks if player y is close to objects y, if not, skips them.
+      if (3 < (Math.abs(yPosObjects - playerYpos)))
+        continue;
       
-      if (newPlayerPos.isOverlaping(mapObjects.get(i).getHitBox(), game.getxZoom(), game.getyZoom())) {
-        return true;
+      for (int i = 0; i < value.size(); i++) {
+        if (newPlayerPos.isOverlaping(value.get(i).getHitBox(), game.getxZoom(), game.getyZoom())) {
+          return true;
+        }
       }
     }
+    
     return false;
   }
   
