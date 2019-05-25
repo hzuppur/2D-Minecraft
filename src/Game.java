@@ -28,7 +28,6 @@ public class Game extends JFrame implements Runnable {
   private WorldMap worldMap;
   private SDK sdk;
   private StartScreen startScreen;
-  
   private List<GameObject> objects;
   private ConcurrentSkipListMap<Integer, List<MapObject>> mapObjects = new ConcurrentSkipListMap<>();
   private Map MapObjectsMap;

@@ -65,3 +65,17 @@ sandLandTR  -59-38
 sandLandTL  -60-39
 sandLandBR  -61-40
 sandLandBL  -62-41
+pathTR      -63-42
+pathT       -64-43
+pathTL      -65-44
+pathMR      -66-45
+pathM       -67-46
+pathML      -68-47
+pathBR      -69-48
+pathB       -70-49
+pathBL      -71-50
+pathTR      -72-51
+pathTL      -73-52
+pathBR      -74-53
+pathBL      -75-54
+house       -76-13-24-3-4-10-96-40-15
