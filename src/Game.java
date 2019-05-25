@@ -213,8 +213,7 @@ public class Game extends JFrame implements Runnable {
       List<MapObject> value = entry.getValue();
       int yPos = entry.getKey();
       int playerYpos = Math.floorDiv((player.getPlayerRectangel().y + player.getPlayerRectangel().h), tileSize * yZoom);
-      System.out.println("Player: " + playerYpos);
-      System.out.println("Objects: " + yPos);
+      
       //if player y is same as objects y render player
       if (yPos >= playerYpos) {
         if (!playerRendered) {
