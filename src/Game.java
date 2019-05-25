@@ -213,11 +213,14 @@ public class Game extends JFrame implements Runnable {
       List<MapObject> value = entry.getValue();
       int yPos = entry.getKey();
       int playerYpos = Math.floorDiv((player.getPlayerRectangel().y + player.getPlayerRectangel().h), tileSize * yZoom);
-      System.out.println(playerYpos);
+      System.out.println("Player: " + playerYpos);
+      System.out.println("Objects: " + yPos);
       //if player y is same as objects y render player
-      if (yPos == playerYpos) {
-        player.render(renderer, xZoom, yZoom);
-        playerRendered = true;
+      if (yPos >= playerYpos) {
+        if (!playerRendered) {
+          player.render(renderer, xZoom, yZoom);
+          playerRendered = true;
+        }
       }
       
       for (int i = 0; i < value.size(); i++)
@@ -226,6 +229,7 @@ public class Game extends JFrame implements Runnable {
     
     if (!playerRendered)
       player.render(renderer, xZoom, yZoom);
+    
     //renders GUI
     objects.get(1).render(renderer, xZoom, yZoom);
     
