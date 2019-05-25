@@ -162,7 +162,6 @@ public class Game extends JFrame implements Runnable {
   
     for (Map.Entry<Integer, List<MapObject>> entry : mapObjects.entrySet()) {
       List<MapObject> value = entry.getValue();
-      System.out.println("MOUSE: " + x + " : " + y);
       for (int i = 0; i < value.size(); i++) {
         if (value.get(i).checkIfselected(x, y)) {
           value.remove(i);

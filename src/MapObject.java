@@ -55,7 +55,8 @@ public class MapObject implements GameObject{
         renderer.renderSprite(sheet.getSprite(spriteRect.x + x, spriteRect.y + y), objectRect.x + (x + spriteXoffset) * tileWidth, objectRect.y + y * tileHeight, xZoom, yZoom, false);
       }
     }
-    renderer.renderRectangle(hitBox, xZoom, yZoom, false);
+    // HitBox
+    //renderer.renderRectangle(hitBox, xZoom, yZoom, false);
   }
   
   public void update(Game game) {
